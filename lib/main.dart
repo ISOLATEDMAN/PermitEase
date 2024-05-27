@@ -6,11 +6,14 @@ import 'package:permitease/auth_pages/auth_page.dart';
 import 'package:permitease/auth_pages/login.dart';
 import 'package:permitease/auth_pages/signup.dart';
 import 'package:permitease/blocs/bloc/auths_bloc.dart';
+import 'package:permitease/blocs/bloc/profile_store_bloc.dart';
 import 'package:permitease/screens/Profile_screen.dart';
+import 'package:permitease/screens/chat_page.dart';
 import 'package:permitease/screens/home.dart';
 import 'package:permitease/screens/onboarding.dart';
 import 'package:permitease/screens/start_page.dart';
 import 'package:permitease/utils/auth_repo.dart';
+import 'package:permitease/utils/profile_store.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +31,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AuthsBloc(authRepo: AuthRepo()),
         ),
+        BlocProvider(
+          create: (context) => ProfileStoreBloc(profile_store: ProfileStore()),
+        ),
       ],
       child: MaterialApp(
         routes: {
@@ -36,7 +42,8 @@ class MyApp extends StatelessWidget {
           '/login': (context) => const Login(),
           '/create': (context) => const Signup(),
           '/home': (context) => const Home(),
-          '/profile':(context)=>const Profiless()
+          '/profile':(context)=>const Profiless(),
+          
         },
         home: const Start(),
       ),

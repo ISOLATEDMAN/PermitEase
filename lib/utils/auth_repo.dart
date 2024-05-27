@@ -16,6 +16,7 @@ class AuthRepo{
   Future<User?> signupwithemailandpass(String email,String pass)async{
     try{
       UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: pass);
+      
      return userCredential.user!;
       
     }
