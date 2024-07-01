@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:permitease/main_chat.dart';
 
 class Chat extends StatelessWidget {
   Chat({required this.userMap, required this.chatRoomID});
@@ -84,20 +85,22 @@ class Chat extends StatelessWidget {
                             return CircularProgressIndicator();
                           }
                           if (snapshot.hasData && snapshot.data!['admin_stat'] == true) {
-                            return IconButton(
-                              onPressed: () async {
-                                Map<String, dynamic> message = {
-                                  "sendBy": _auth.currentUser?.displayName,
-                                  "message": "Permission is Provided for this time..",
-                                  "time": FieldValue.serverTimestamp(),
-                                };
-                                await _firebaseFirestore
-                                    .collection('chatRoom')
-                                    .doc(chatRoomID)
-                                    .collection('chats')
-                                    .add(message);
-                              },
-                              icon: Icon(Icons.done),
+                            return Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () async {
+                                    await onDonePressed();
+                                  },
+                                  icon: Icon(Icons.done),
+                                ),
+                                IconButton(onPressed: (){
+                                  onthumbsup();
+                                }, icon: Icon(Icons.thumb_up_alt_sharp)),
+                                IconButton(onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>MainChat()));
+                                }, icon: Icon(Icons.chat))
+                                
+                              ],
                             );
                           }
                           return Container();
@@ -129,7 +132,50 @@ class Chat extends StatelessWidget {
       _msg.clear();
     }
   }
+
+  Future<void> onDonePressed() async {
+    final currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      final message = {
+        "sendBy": currentUser.displayName,
+        "message": "Permission is alloted ",
+        "time": FieldValue.serverTimestamp(),
+      };
+
+      // Add message to chat room
+      await _firebaseFirestore
+          .collection('chatRoom')
+          .doc(chatRoomID)
+          .collection('chats')
+          .add(message);
+
+      // Add message to mainChat collection
+      await _firebaseFirestore
+          .collection('mainChat')
+          .add(message);
+    }
+  }
+  Future<void> onthumbsup()async{
+        final currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      final message = {
+        "sendBy": currentUser.displayName,
+        "message": "Permission is alloted to student",
+        "time": FieldValue.serverTimestamp(),
+      };
+
+      // Add message to chat room
+      await _firebaseFirestore
+          .collection('chatRoom')
+          .doc(chatRoomID)
+          .collection('chats')
+          .add(message);
+
+      // Add message to mainChat collection
+    }
+  }
 }
+
 
 class Message extends StatelessWidget {
   const Message({

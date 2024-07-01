@@ -7,6 +7,7 @@ import 'package:permitease/auth_pages/login.dart';
 import 'package:permitease/auth_pages/signup.dart';
 import 'package:permitease/blocs/bloc/auths_bloc.dart';
 import 'package:permitease/blocs/bloc/profile_store_bloc.dart';
+import 'package:permitease/main_chat.dart';
 import 'package:permitease/screens/Profile_screen.dart';
 import 'package:permitease/screens/chat_page.dart';
 import 'package:permitease/screens/home.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
           '/create': (context) => const Signup(),
           '/home': (context) => const Home(),
           '/profile':(context)=>const Profiless(),
+          '/mainchat':(context)=>const MainChat(),
           
         },
         home: const Start(),
